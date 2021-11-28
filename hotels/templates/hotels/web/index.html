@@ -1,0 +1,189 @@
+{% extends 'hotels/web/template.html' %}
+{% block title %}Booking Hotels{% endblock %}
+
+
+<!--start menu -->
+{% block active_menu %}
+<ul class="menu">
+	<li class="active"><a href="index">hotel</a></li> |
+	<li><a href="rooms">rooms & suits</a></li> |
+	<li><a href="reservation">reservation</a></li> |
+	<li><a href="activities">activities</a></li> |
+	<li><a href="contact">contact</a></li>
+	<div class="clear"></div>
+</ul>
+{% endblock %}
+
+
+<!--start main -->
+{% block content %}
+<div class="main_bg" id="container">
+	<div class="wrap">
+		<div class="online_reservation">
+			<div class="b_room">
+				<div class="booking_room">
+ 					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+				</div>
+				<div class="reservation">
+					<ul>
+
+						<li class="span1_of_1 left">
+							<h5>Kind of hotels:</h5>
+							<!----------start section_hotel----------->
+							<div class="section_hotel">
+								<select id="country" onchange="change_country(this.value)" class="frm-field required">
+									<option value="" disabled selected>Select a hotel</option>
+									<option v-for='room in rooms'>${ room.room }$</option>
+								</select>
+							</div>
+						</li>
+						<li class="span1_of_1 left">
+							<h5>size of room:</h5>
+							<!----------start section_room----------->
+							<div class="section_room">
+								<select id="country" onchange="change_country(this.value)" class="frm-field required">
+									<option value="" disabled selected>Select a size of room</option>
+									<option v-for='room in rooms'>
+										<div v-if="room.quantity_room == 1"> single room </div>
+										<div v-if="room.quantity_room == 2"> double room </div>
+										<div v-if="room.quantity_room == 3"> triple room </div>
+									</option>
+								</select>
+							</div>
+						</li>
+						<li class="span1_of_1 left">
+							<h5>type of room:</h5>
+							<!----------start section_room_type----------->
+							<div class="section_room_type">
+								<select id="country" onchange="change_country(this.value)" class="frm-field required">
+									<option value="" disabled selected>Select a type of room</option>
+									<option v-for='room in rooms'>
+										<!-- ${ room.type_room }$ -->
+										<div v-if="room.type_room == lux"> Lux</div>
+										<div v-if="room.type_room == default"> Standard</div>
+									</option>
+								</select>
+							</div>
+						</li>
+						<li class="span1_of_1 left">
+							<h5>check-in-date:</h5>
+							<div class="book_date">
+								<form>
+									<input class="date" id="datepicker" type="text" value="DD/MM/YY"
+										onfocus="this.value = '';"
+										onblur="if (this.value == '') {this.value = 'DD/MM/YY';}">
+								</form>
+
+							</div>
+						</li>
+						<li class="span1_of_1 left">
+							<h5>check-out-date:</h5>
+							<div class="book_date">
+								<form>
+									<input class="date" id="datepicker1" type="text" value="DD/MM/YY"
+										onfocus="this.value = '';"
+										onblur="if (this.value == '') {this.value = 'DD/MM/YY';}">
+								</form>
+							</div>
+						</li>
+						<li class="span1_of_2 left">
+							<h5>Adults:</h5>
+							<!----------start section_room----------->
+							<div class="section_room">
+								<select id="country" onchange="change_country(this.value)" class="frm-field required">
+									<option value="null">1</option>
+									<option value="null">2</option>
+									<option value="AX">3</option>
+									<option value="AX">4</option>
+								</select>
+							</div>
+						</li>
+						<li class="span1_of_3">
+							<div class="date_btn">
+								<form>
+									<input type="submit" value="search now" />
+								</form>
+							</div>
+						</li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<!--start grids_of_3 -->
+		<div class="grids_of_3">
+			<!-- <div class="grid1_of_3">
+				<div class="grid1_of_3_img">
+					<a href="details">						
+						<img src="../../../static/images/pic2.jpg" alt="" />
+						<span class="next"> </span>
+					</a>
+				</div>
+				<h4><a href="#">single room<span>120$</span></a></h4>
+				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+			</div>
+			<div class="grid1_of_3">
+				<div class="grid1_of_3_img">
+					<a href="details">
+						<img src="../../../static/images/pic1.jpg" alt="" />
+						<span class="next"> </span>
+					</a>
+				</div>
+				<h4><a href="#">double room<span>180$</span></a></h4>
+				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+			</div> -->
+			<template v-for='room in rooms'>
+				<div class="grid1_of_3">
+					<div class="grid1_of_3_img">
+						<a :href="details/room.id">
+							<!-- <img src="../../../static/images/pic3.jpg" alt="" /> -->
+							<img v-bind:src="room.room_img" alt="" />
+							<span class="next"> </span>
+						</a>
+					</div>
+					<h4><a href="#">${ room.room }$
+							<div v-else-if="room.quantity_room == 1"> single room </div>
+							<div v-else-if="room.quantity_room == 2"> double room </div>
+							<div v-else-if="room.quantity_room == 3"> triple room </div>
+							${ room.price }$ UZS
+						</a>
+					</h4>
+					<p>
+					<ul class="list-group" v-for="desc in room.description">
+						<li class="list-group-item" v-if="desc.tv"><i class="fa fa-tv" style="color:royalblue"></i> TV
+						</li>
+						<li class="list-group-item" v-if="desc.air_conditioning"><i class="fas fa-snowflake"
+								style="color:royalblue"></i> Conditsioner </li>
+						<li class="list-group-item" v-if="desc.refrigerator"><i class="fas fa-tv"
+								style="color:royalblue"> Refrigerator</i></li>
+						<li class="list-group-item" v-if="desc.radio"><i class="fas fa-rss" style="color:royalblue"></i>
+							Radio</li>
+						<li class="list-group-item" v-if="desc.sauna"><i class="fas fa-bath"
+								style="color:royalblue"></i> Sauna</li>
+						<li class="list-group-item" v-if="desc.Extra_long_beds"><i class="fas fa-bed"
+								style="color:royalblue"></i> Extra long beds</li>
+						<li class="list-group-item" v-if="desc.Walk_in_closet"><i class="fas fa-walking"
+								style="color:royalblue"></i> Walk in closet</li>
+						<li class="list-group-item" v-if="desc.Baby_safety_gates"><i class="fas fa-baby-carriage"
+								style="color:royalblue"></i> Baby safety gates</li>
+						<li class="list-group-item" v-if="desc.Desk"><i class="fas fa-desktop"
+								style="color:royalblue"></i> Desk</li>
+						<li class="list-group-item" v-if="desc.Clothes_rack"><i class="fas fa-desktop"
+								style="color:royalblue"></i> Clothes rack</li>
+						<li class="list-group-item" v-if="desc.Heating"><i class="fas fa-desktop"
+								style="color:royalblue"></i> Heating</li>
+						<li class="list-group-item" v-if="desc.Board_games_puzzles"><i class="fas fa-desktop"
+								style="color:royalblue"></i> Board_games_puzzles</li>
+						<li class="list-group-item" v-if="desc.Iron"><i class="fas fa-desktop"
+								style="color:royalblue"></i> Iron</li>
+					</ul>
+					</p>
+				</div>
+			</template>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--start main -->
+{% endblock %}
